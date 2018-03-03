@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion 26
+
+    signingConfigs {
+
+        release {
+            storeFile file("../debug.keystore")
+            storePassword 'android'
+            keyAlias 'AndroidDebugKey'
+            keyPassword 'android'
+        }
+
+    }
+
+    defaultConfig {
+
+        applicationId "jaelson.wagner.silva.upcomingmovies"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+
+        release {
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+
+        debug {
+
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            debuggable true
+
+        }
+
+        buildTypes.each {
+
+            it.buildConfigField 'String', 'TMDB_API_KEY', "\"1f54bd990f1cdfb230adb312546d765d\""
+            it.buildConfigField 'String', 'TMDB_BASE_URL', "\"https://api.themoviedb.org/\""
+
+        }
+
+        compileOptions {
+
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+
+        }
+
+    }
+}
+
+dependencies {
+
+    def supportLibraryVersion = "26.1.0"
+    def moshiVersion = "1.5.0"
+    def retrofitVersion = '2.3.0'
+    def daggerVersion = "2.2"
+    def stethoVersion = '1.5.0'
+    def glideVersion = '3.7.0'
+    def rxAndroidVersion = '2.0.2'
+    def rxJavaVersion = '2.1.10'
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    implementation "com.android.support:recyclerview-v7:${supportLibraryVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation "com.squareup.moshi:moshi:${moshiVersion}"
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    // (see https://github.com/ReactiveX/RxJava/releases for latest 2.x.x version)
+    implementation "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
+    implementation "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    implementation "com.github.bumptech.glide:glide:${glideVersion}"
+    implementation 'com.jakewharton.timber:timber:4.6.1'
+    implementation "com.google.dagger:dagger:${daggerVersion}"
+    compileOnly "com.google.dagger:dagger-compiler:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    /* Stetho okhttp and Stetho realm */
+    implementation "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"
+    debugCompileOnly "com.facebook.stetho:stetho:${stethoVersion}"
+    //debugCompile "com.uphyca:stetho_realm:${stethoRealmVersion}"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+}
